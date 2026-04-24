@@ -20,7 +20,9 @@
 #include <string>
 #include <vector>
 #include <mutex>
+#if defined(__x86_64__) || defined(__i386__)
 #include <xmmintrin.h>
+#endif
 
 #include "Cycles.h"
 

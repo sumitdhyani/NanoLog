@@ -43,7 +43,9 @@
 #include <stdlib.h>
 #include <syscall.h>
 #include <stdio.h>
+#if defined(__x86_64__) || defined(__i386__)
 #include <xmmintrin.h>
+#endif
 
 #include "Cycles.h"
 #include "Log.h"
@@ -787,6 +789,7 @@ double memcpyCold1000()
 }
 
 
+#if defined(__x86_64__) || defined(__i386__)
 double mm_stream_pi_test()
 {
     int count = 10000000;
@@ -804,6 +807,7 @@ double mm_stream_pi_test()
 
     return Cycles::toSeconds(stop - start)/(count);
 }
+#endif // defined(__x86_64__) || defined(__i386__)
 
 
 static uint64_t variable = 0;
@@ -824,6 +828,7 @@ void readerThread(uint64_t *variableToRead,
     discard(&sum);
 }
 
+#if defined(__x86_64__) || defined(__i386__)
 double mm_stream_pi_contended()
 {
     int count = 1000;
@@ -854,6 +859,7 @@ double mm_stream_pi_contended()
     pthread_barrier_destroy(&barrier);
     return Cycles::toSeconds(stop - start)/(count);
 }
+#endif // defined(__x86_64__) || defined(__i386__)
 
 // Cost of notifying a condition variable
 double notify_all() {
@@ -1289,10 +1295,12 @@ TestInfo tests[] = {
      "memcpy 100 bytes with cold dst and src"},
     {"memcpyCold1000", memcpyCold1000,
      "memcpy 1000 bytes with cold dst and src"},
+#if defined(__x86_64__) || defined(__i386__)
     {"mm_stream_pi", mm_stream_pi_test,
      "Cost to write 8-bytes without polluting cache"},
     {"mm_stream_pi_contended", mm_stream_pi_contended,
      "mm_stream_pi with a second thread reading the variable"},
+#endif
     {"notify_all", notify_all,
      "condition_variable.notify_all()"},
     {"notify_one", notify_one,

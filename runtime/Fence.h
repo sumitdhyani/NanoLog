@@ -35,7 +35,11 @@ class Fence {
      */
     static void inline lfence()
     {
+#if defined(__x86_64__) || defined(__i386__)
         __asm__ __volatile__("lfence" ::: "memory");
+#else
+        __atomic_thread_fence(__ATOMIC_ACQUIRE);
+#endif
     }
 
     /**
@@ -46,7 +50,11 @@ class Fence {
      */
     static void inline sfence()
     {
+#if defined(__x86_64__) || defined(__i386__)
         __asm__ __volatile__("sfence" ::: "memory");
+#else
+        __atomic_thread_fence(__ATOMIC_RELEASE);
+#endif
     }
 
     /**
