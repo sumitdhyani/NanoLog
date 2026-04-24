@@ -4,10 +4,10 @@ set(NANOLOG_RUNTIME_DIR ${CMAKE_CURRENT_SOURCE_DIR}/runtime)
 
 # Build NanoLog using its native Makefile (handles preprocessor code generation)
 add_custom_command(
-    OUTPUT ${NANOLOG_RUNTIME_DIR}/libNanoLog.a
-    COMMAND $(MAKE) libNanoLog.a
+    OUTPUT ${NANOLOG_RUNTIME_DIR}/libNanoLog.a ${NANOLOG_RUNTIME_DIR}/decompressor
+    COMMAND $(MAKE) libNanoLog.a decompressor
     WORKING_DIRECTORY ${NANOLOG_RUNTIME_DIR}
-    COMMENT "Building NanoLog static library"
+    COMMENT "Building NanoLog static library and decompressor"
 )
 
 add_custom_target(NanoLog_build DEPENDS ${NANOLOG_RUNTIME_DIR}/libNanoLog.a)
